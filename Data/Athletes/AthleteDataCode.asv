@@ -10,7 +10,7 @@ rng(1); % sets the seed for repeatability
 
 % 2 Random Rest Days a Week
 restw1d1 = randi([1,7]); % week 1 rest days; week1 day1
-restw1d2 = randi([1,7]); % week 1, rest day 2
+restw1d2 = randi([1,7]);
 while restw1d2 == restw1d1 % ensures unique and random rest days
     restw1d2 = randi([1,7]);
 end
@@ -75,7 +75,6 @@ open("athlete1_beginner.csv")
 Days = (1:21)';
 
 restDays = (1:4:21); % regular rest days, every 4 days (twice a week)
-
 ExerciseType = strings(1,21)';
 for i = 1:21
     randomWorkout = randi([1,4]); % 4 workouts: "Running", "Pushups", "Squats", "Cycling"
@@ -131,10 +130,10 @@ for i = 1:21
     end
 end
 
-PreWorkoutHR = randi([55, 65],1,21)'; % 55-65 bmp
-PostWorkoutHR = randi([145, 180],1,21)'; % 145-180 bpm
-Duration = randi([30, 60], 1, 21)'; % 30-60 min
-Intensity = randi([7, 10], 1, 21)'; % 7-10 intensity
+PreWorkoutHR = randi([55,65],1,21)'; % 55-65 bmp
+PostWorkoutHR = randi([145,180],1,21)'; % 145-180 bpm
+Duration = randi([20,40],1,21)'; % 30-60 min
+Intensity = randi([5,8],1,21)'; % 7-10 intensity
 
 % Accounting for Rest Days
 ExerciseType(restDays) = "Rest";
@@ -142,6 +141,6 @@ PostWorkoutHR(restDays) = PreWorkoutHR(restDays);
 Duration(restDays) = 0;
 Intensity(restDays) = 0;
 
-athlete3 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
-writetable(athlete3, "athlete3_advanced.csv")
-open("athlete3_advanced.csv")
+athlete2 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
+writetable(athlete2, "athlete2_intermediate.csv")
+open("athlete2_intermediate.csv")
