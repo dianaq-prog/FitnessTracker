@@ -1,0 +1,3 @@
+Athlete 1: Beginner - Just started fitness journey, irregular schedule
+Athlete 2: Intermediate - Consistent training, moderate intensity
+Athlete 3: Advanced - Highly trained, structured program

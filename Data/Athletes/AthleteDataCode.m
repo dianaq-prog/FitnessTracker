@@ -53,7 +53,7 @@ rowPostWorkoutHR(restDays) = rowPreWorkoutHR(restDays);
 rowDuration(restDays) = 0;
 rowIntensity(restDays) = 0;
 
-Days = rowDays'; %transpose row to column
+Days = rowDays'; % transpose row to column; Capitalized for Table format
 PreWorkoutHR = rowPreWorkoutHR'; 
 PostWorkoutHR = rowPostWorkoutHR';
 ExerciseType = rowExerciseType'; 
@@ -62,7 +62,7 @@ Intensity = rowIntensity';
 
 athlete1 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
 writetable(athlete1, "athlete1_beginner.csv")
-open("athlete1_beginner.csv")
+
 
 % ------------- Athlete 2 -------------
 % PreWorkoutHR: 65-75 bpm
@@ -103,7 +103,7 @@ Intensity(restDays) = 0;
 
 athlete2 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
 writetable(athlete2, "athlete2_intermediate.csv")
-open("athlete2_intermediate.csv")
+
 
 % ------------- Athlete 3 -------------
 % PreWorkoutHR: 55-65 bpm
@@ -115,7 +115,7 @@ open("athlete2_intermediate.csv")
 
 Days = (1:21)';
 
-restDays = (7:7:21); % regular rest days, ever 7 days (once a week)
+restDays = (7:7:21); % regular rest days, every 7 days (once a week)
 
 ExerciseType = strings(1,21)'; % Random workouts
 for i = 1:21
@@ -144,4 +144,19 @@ Intensity(restDays) = 0;
 
 athlete3 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
 writetable(athlete3, "athlete3_advanced.csv")
+
+
+% ------------- Athlete Profile txt creation -------------
+athleteProfile1 = "Athlete 1: Beginner - Just started fitness journey, irregular schedule";
+athleteProfile2 = "Athlete 2: Intermediate - Consistent training, moderate intensity";
+athleteProfile3 = "Athlete 3: Advanced - Highly trained, structured program";
+
+athleteProfiles = [athleteProfile1; athleteProfile2; athleteProfile3];
+
+writelines(athleteProfiles, "athlete_profiles.txt")
+
+% ------------- Open All New Files -------------
+open("athlete_profiles.txt")
+open("athlete1_beginner.csv")
+open("athlete2_intermediate.csv")
 open("athlete3_advanced.csv")
