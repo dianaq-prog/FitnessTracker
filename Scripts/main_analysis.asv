@@ -213,7 +213,7 @@ Consistency = round(stdIntensity', 2); % std of intensity (lower = more consiste
 summaryTable = table(AthleteLevel, AvgHeartRate, totalMinutes, Consistency); 
 
 % Export summary table to csv
-csvOut = fullfile('..', 'Result', 'summary_statistics.csv')
+csvOut = fullfile('..', 'Results', 'summary_statistics.csv');
 writetable(summaryTable, csvOut);
 fprintf('Summary table saved to: %s/n', csvOut);
 
@@ -223,3 +223,91 @@ save(matOut);
 fprintf('Workspace saved to: %s\n\n', matOut); 
 
 fprintf('== Analysis complete. Ready for visualization. ===\n');
+
+%% ==== Simple Fitness Score =====%%
+% Computer a single 0-100 fitness score per athlete using four measured
+% metrics: 1). Total worout time 2). Average intensity 3). Consistency 4).
+% Recovery efficiency 
+
+% All four metrics are weighted equally (25% each_. 
+% Helper: safe normalize (direct) ---
+% Maps a vector of values to [0, 100]; higher raw values = high score
+normalizeDir = @(v) deal( ...
+    (max(v) - min(v)) < 1e-9, ... % flag: all values equal
+    (v - min(v)) ./ max(max(v) - min(v), 1e-9) * 100);
+
+% --- Helper: safe normalize (inverse) ---
+% Maps a vector of value to [0, 100]; lower raw value - higher score 
+normalizeInv = @(v) deal( ...
+    (max(v) - min(v)) < 1e-9, ...
+    (max(v) - v) ./ max(max(v) - min(v), 1e-9) * 100);
+
+% --- Compute each normalize component ---
+% (1) Total workout time - more minutes = fitter 
+[eqFlag, scoreTime] = normalizeDir(totalMinutes);
+if eqFlag, scoreTime = ones(1,3) * 50; end 
+
+% (2) Average intensity - higher effort = fitter 
+[eqFlag, scoreIntensity] = normalizeDir(meanIntensity);
+if eqFlag, scoreIntensity = ones(1,3) * 50; end 
+
+% (3) Consistency - lower std of intensity = more consistency 
+[eqFlag, scoreConsistency] = normalizeInv(stdIntensity); 
+if eqFlag, scoreConsistency = ones(1,3) * 50, end
+% (4) Recovery efficiency - lower HR increase = better cardiovascular
+[eqFlag, scoreRecovery] = normalizeInv(stdIntensity); 
+if eqFlag, scoreRecovery = ones(1,3) * 50, end
+
+% --- Compute each normalized component ---
+
+% (1) Total workout time - more minutes = fitter 
+ [eqFlag, scoreTime] = normalizeDir(totalMinutes);
+ if eqFlag, scoreTime = ones(1,3) * 50, end
+
+ %(2) Average intensity - higger effort = fitter
+ [eqFlag, scoreIntensity] = normalizeDir(meanIntensity);
+ if eqFlag, scoreIntensity = ones(1,3) * 50; end 
+
+ % (3) Consistency - lower std of intensity = more consistent = fitter 
+ [eqFlag, scoreConsistency] = normalizeInv(stdIntensity); 
+ if eqFlag, scoreConsistency = ones(1,3) * 50, end
+
+ % (4) Recovery efficiency - lower HR increase = better cardio = fitter 
+ [eqFlag, scoreRecovery] = normalizeInv(recoveryRate); 
+ if eqFlag, scoreRecovery = ones(1,3) * 50; end
+
+ % ---- Combine with equal weighting (25% each) ---
+  weights = [0.25, 0.25, 0.25, 0.25]; % must sum to 1 
+
+  compositeScore = weights(1) * scoreTime + ...
+                   weights(2) * scoreIntensity + ...
+                   weights(3) * scoreConsistency + ...
+                   weights(4) * scoreRecovery;
+  % --- Display detailed breakdown ---
+  fprintf('=== Extension: Composite Fitness Score (0-100 ===\n');
+  fprintf('%-15s %10s %11s %13s %12 | %10s\n', ...
+      'Athlete', 'WorkTime', 'Intensity', 'Consistency', 'Recovery', 'TOTAL')
+  fprintf('%s\n', repmat('-', 1, 76)); 
+  for a = 1:3
+  fprintf('%-15s %10.1f %11.1f %13.1f %12.1f | %10.1f\n', ...
+        athleteNames{a}, ...
+        scoreTime(a), scoreIntensity(a), scoreConsistency(a), scoreRecovery(a), ...
+        compositeScore(a));   
+  end
+
+  % --- Identify winner --- 
+
+  [topScore, topIdx] = max(compsoiteScore);
+  fprintf('\nTop composite fitness score: %s (%.1f / 100\n\n', ...
+      athleteNames{topIdx}, topScore); 
+
+  % --- Add composite scores to su,,ary table and re-save --- 
+  compositeScore = max(compsiteScore', 1);
+  summaryTable.compositeScore = compositeScore;
+  writetable(summaryTable.csvOut); 
+  fprintf(['Update summary table (with composite scores) saved to: %s' ...
+      \n'], csvOut);
+  % Re-save workspace with composite score variables included 
+  save(matOut); 
+  fprintf('Workspace re-saved t0: %s\n', matOut); 
+
