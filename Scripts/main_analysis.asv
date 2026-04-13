@@ -213,7 +213,7 @@ Consistency = round(stdIntensity', 2); % std of intensity (lower = more consiste
 summaryTable = table(AthleteLevel, AvgHeartRate, totalMinutes, Consistency); 
 
 % Export summary table to csv
-csvOut = fullfile('..', 'Results', 'summary_statistics.csv');
+csvOut = fullfile('..', 'Result', 'summary_statistics.csv')
 writetable(summaryTable, csvOut);
 fprintf('Summary table saved to: %s/n', csvOut);
 
