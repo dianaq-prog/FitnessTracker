@@ -24,6 +24,8 @@
 % Outputs: athlete1_beginner.csv , athlete2_intermediate.csv ,
 %   athlete3_advanced.csv , athlete_profiles.txt
 
+clear; clc; close all;
+
 %% ------------- Creating Directory -------------
 folder = fullfile("..", "Data", "Athletes");
 if ~isfolder(folder)
