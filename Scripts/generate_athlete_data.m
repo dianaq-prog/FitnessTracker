@@ -1,4 +1,36 @@
-% ------------- Athlete 1 -------------
+% GENERATE_ATHLETE_DATA - Generates files containing the workout statistics
+%   and profiles of three athletes.
+% 
+% Team Members: 
+%   Diana Quach (Data Manager)
+%   Kareemat Adeagbo (Algorithm Developer)
+%   Retal Sabbahi (Visualization Specialist)
+% Date: April 2026
+%
+% Description:
+%   Generates three .csv files for the workout statistics of each athlete.
+%   For each athlete, data is generated for 21 days. Each day a random
+%   exercise types is assigned. A random heart rate, duration, and
+%   intensity is also generated for each day based on given ranges. Rest
+%   days are assigned based on the pattern of their schedule. Athlete 1 has
+%   an irregular schedule, so their rest days happen randomly twice a week.
+%   Athlete 2 is more consistent with rest days every four days (twice a
+%   week). Athlete 3 is very consistent with one rest day a week every 7th
+%   day.
+%   A .txt file is created to contain the profile descriptions of each
+%   athlete.
+%
+% Inputs: None
+% Outputs: athlete1_beginner.csv , athlete2_intermediate.csv ,
+%   athlete3_advanced.csv , athlete_profiles.txt
+
+%% ------------- Creating Directory -------------
+folder = fullfile("..", "Data", "Athletes");
+if ~isfolder(folder)
+    mkdir(folder)
+end
+
+%% ------------- Athlete 1 -------------
 % PreWorkoutHR: 70-85 bpm
 % PostWorkoutHR: 120-150 bpm
 % Duration: 10-25 minutes
@@ -61,10 +93,10 @@ Duration = rowDuration';
 Intensity = rowIntensity';
 
 athlete1 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
-writetable(athlete1, "athlete1_beginner.csv")
+writetable(athlete1, fullfile(folder, "athlete1_beginner.csv"))
 
 
-% ------------- Athlete 2 -------------
+%% ------------- Athlete 2 -------------
 % PreWorkoutHR: 65-75 bpm
 % PostWorkoutHR: 130-165 bpm
 % Duration: 20-40 minutes
@@ -102,10 +134,10 @@ Duration(restDays) = 0;
 Intensity(restDays) = 0;
 
 athlete2 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
-writetable(athlete2, "athlete2_intermediate.csv")
+writetable(athlete2, fullfile(folder, "athlete2_intermediate.csv"))
 
 
-% ------------- Athlete 3 -------------
+%% ------------- Athlete 3 -------------
 % PreWorkoutHR: 55-65 bpm
 % PostWorkoutHR: 145-180 bpm
 % Duration: 30-60 minutes
@@ -143,20 +175,14 @@ Duration(restDays) = 0;
 Intensity(restDays) = 0;
 
 athlete3 = table(Days, ExerciseType, PreWorkoutHR, PostWorkoutHR, Duration, Intensity);
-writetable(athlete3, "athlete3_advanced.csv")
+writetable(athlete3, fullfile(folder, "athlete3_advanced.csv"))
 
 
-% ------------- Athlete Profile txt creation -------------
+%% ------------- Athlete Profile .txt creation -------------
 athleteProfile1 = "Athlete 1: Beginner - Just started fitness journey, irregular schedule";
 athleteProfile2 = "Athlete 2: Intermediate - Consistent training, moderate intensity";
 athleteProfile3 = "Athlete 3: Advanced - Highly trained, structured program";
 
 athleteProfiles = [athleteProfile1; athleteProfile2; athleteProfile3];
 
-writelines(athleteProfiles, "athlete_profiles.txt")
-
-% ------------- Open All New Files -------------
-open("athlete_profiles.txt")
-open("athlete1_beginner.csv")
-open("athlete2_intermediate.csv")
-open("athlete3_advanced.csv")
+writelines(athleteProfiles, fullfile(folder, "athlete_profiles.txt"))
