@@ -1,6 +1,6 @@
 % MAIN_VISUALIZATION - Generates project plots and figures
 %
-% Team Members: Diana Quach (Data manager, Kareemat Adeagbo (alhgorithim developer), Retal Sabbahi (Visualization Specialist),
+% Team Members: Diana Quach (Data Manager, Kareemat Adeagbo (Algorithm Developer), Retal Sabbahi (Visualization Specialist),
 % Date: 14 April 2026
 %
 % Description:
