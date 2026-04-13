@@ -1,7 +1,7 @@
 % MAIN_VISUALIZATION - Generates project plots and figures
 %
-% Team Members: [Your Name] (Visualization Specialist), [Teammate 1], [Teammate 2]
-% Date: April 2026
+% Team Members: Diana Quach (Data manager, Kareemat Adeagbo (alhgorithim developer), Retal Sabbahi (Visualization Specialist),
+% Date: 14 April 2026
 %
 % Description:
 % Loads athlete fitness data, calculates necessary plotting variables, 
