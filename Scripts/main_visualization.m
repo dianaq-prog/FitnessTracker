@@ -120,3 +120,5 @@ grid on;
 saveas(gcf, fullfile('..', 'Results', 'Figures', '21_day_hr_trend.png'));
 
 disp('All 5 figures successfully generated and saved to Results/Figures/');
+
+%new version
