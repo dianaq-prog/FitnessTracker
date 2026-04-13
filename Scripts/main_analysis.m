@@ -8,11 +8,7 @@
 % Description: 
 % This script loads workout data for three athletes (Beginner, 
 % Intermediate, and Advanced), categorizes workouts into heart rate zones,
-% calculates time in each zone, computers recovery rates, generates symmary
-
-
-
-
+% calculates time in each zone, computers recovery rates, generates summary
 % statistics, and exports results to CSV and .mat
 % formats for further use. 
 %
@@ -28,18 +24,20 @@
 clear; clc; close all; 
 
 % Create output directories if they don't exist 
-if ~isfolder('Results')
-    mkdir('Results');
+folder = fullfile('..', 'Results')
+if ~isfolder(folder)
+    mkdir(folder);
 end
-if isfolder(fullfile('Result', 'Figures'))
-    mkdir(fullfile('Results', 'Figures'));
+figureFolder = fullfile('..', 'Results', 'Figures')
+if isfolder(figureFolder)
+    mkdir(figureFolder);
 end
 
 %% ============= Task 1: Load Data ============
 % Build file paths using fullfile for cross-platform compatibility 
-file1 = fullfile('Data', 'Athletes', 'athlete1_beginner.csv');
-file2 = fullfile('Data', 'Athletes', 'athlete2_intermediate.csv');
-file3 = fullfile('Data', 'Athletes', 'athlete3_advanced.csv');
+file1 = fullfile('..', 'Data', 'Athletes', 'athlete1_beginner.csv');
+file2 = fullfile('..', 'Data', 'Athletes', 'athlete2_intermediate.csv');
+file3 = fullfile('..', 'Data', 'Athletes', 'athlete3_advanced.csv');
 
 % Check files exist before loading 
 if ~isfile(file1) || ~isfile(file2) || ~isfile(file3)
@@ -106,7 +104,7 @@ timeInZone = zeros(3, 4);
 
 for a = 1:3
     data = athletes{a}; 
-    zones = allZOnes{a}; 
+    zones = allZones{a}; 
 
     for z = 1:4
         inZone = zones == zoneNames{z};     %logical index
@@ -171,7 +169,7 @@ for a = 1:3
 end
 
 fprintf('=== Basic Statistic (workout days only) ===\n'); 
-fprint('%-15s %12s %13s %14 %10s\n', ...
+fprintf('%-15s %12s %13s %14 %10s\n', ...
     'Athlete', 'AvgPostHR', 'AvgDuration', 'Consistnecy', 'Workouts');
 fprintf('%s\n', repmat('-', 1, 66));
 for a = 1:3
@@ -210,17 +208,17 @@ fprintf('\n');
 AthleteLevel = athleteNames'; 
 AvgHeartRate = round(meanPostHR', 2); 
 totalMinutes = totalMinutes'; 
-Consistnecy = round(stdIntensity', 2); % std of intensity (lower = more consistent) 
+Consistency = round(stdIntensity', 2); % std of intensity (lower = more consistent) 
 
-summaryTable = table(AthleteLevel, AvgHeartRate, TotalMinutes, Consistency); 
+summaryTable = table(AthleteLevel, AvgHeartRate, totalMinutes, Consistency); 
 
 % Export summary table to csv
-csvOut = fullfile('Result', 'summary_statistics.csv')
+csvOut = fullfile('..', 'Result', 'summary_statistics.csv')
 writetable(summaryTable, csvOut);
 fprintf('Summary table saved to: %s/n', csvOut);
 
 % Save full workspace to .mat file 
-matOut = fullfile('Results', 'analysis_results.mat');
+matOut = fullfile('..', 'Results', 'analysis_results.mat');
 save(matOut); 
 fprintf('Workspace saved to: %s\n\n', matOut); 
 
